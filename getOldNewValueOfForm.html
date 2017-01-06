@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+<h4>
+Form 1
+<p><b>Results:</b> <span id="results"></span></p>
+</h4>
+<form action="#" class="genericFrom">
+  <input name="new" value="test" type="text" >
+  <input value="searchSecond" name="old" type="text">
+  <select>
+    <option value="10" selected>test</option>
+    <option value="20">test 20</option>
+  </select>
+</form>
+
+<script>
+(function (form) {
+  console.log(form);
+  jQuery(form.elements).on('focusin', function () {
+    console.log("Saving value " + $(this).val());
+    var elementName = "input[name='"+$(this).attr('name')+"-old']";
+    console.log(elementName);
+    if(jQuery(elementName).length > 0) {
+      $(this).data('val', $(elementName).val());
+    }else {
+      $(this).data('val', $(this).val())
+    }
+  });
+  
+  jQuery(form.elements).change(function (event) {
+    var prev = $(this).data('val');
+    var current = $(this).val();
+    var elementName = $(this).attr('name')+"-old";
+    jQuery("input[name='"+elementName+"']").remove();
+    if(prev != current) {
+      jQuery('<input type="text" name="'+elementName+'" value="'+prev+'" />').insertAfter(jQuery(this)); 
+    }
+  });
+})(document.forms[0]); 
+</script>
+</body>
+</html>
